@@ -1,16 +1,13 @@
 import cv2
-import sys
-import numpy
-
 
 cap = cv2.VideoCapture(0)
 
-#set the camera resolution to 1080p
+# set the camera resolution to 1080p
 
-cap.set(3,1920) # Width
-cap.set(4,1080) # Height
+cap.set(3, 1920)  # Width
+cap.set(4, 1080)  # Height
 
-while(True):
+while (True):
 
     ret, frame = cap.read()  # Reads next frame
     cv2.putText(frame, 'Looking for orange objects', (200, 450), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
@@ -39,9 +36,7 @@ while(True):
             # Draw Contours
             cv2.drawContours(frame, [ci], 0, (255, 0, 0), 2)
 
-
-
-    cv2.imshow('Input',frame)
+    cv2.imshow('Input', frame)
 
     # print('Local x-coordinate' , cx)
     # print('Local y-coordinate' , cy)
@@ -51,7 +46,6 @@ while(True):
     if keyDown == ord('q'):
         print('Quitting')
         break
-
 
 cap.release()
 cv2.destroyAllWindows()
