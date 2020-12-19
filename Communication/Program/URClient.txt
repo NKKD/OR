@@ -1,0 +1,19 @@
+ Program
+   BeforeStart
+     open≔socket_open("127.0.0.1",21)
+     Loop open≟ False 
+       open≔socket_open("127.0.0.1",21)
+     targetPos≔p[0,0,0,0,0,0]
+     counter≔6
+   Robot Program
+     sendToServer≔'send to server'
+     socket_send_string(sendToServer)
+     receiveFromServ≔socket_read_ascii_float(6)
+     Loop receiveFromServ[0]≠6
+       Wait: 0.3
+       receiveFromServ≔socket_read_ascii_float(6)
+     Loop counter<6
+       targetPos[counter]=receiveFromServ[counter+1]
+       counter≔counter+1
+     MoveJ
+       targetPos
