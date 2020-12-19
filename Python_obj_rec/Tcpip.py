@@ -29,7 +29,14 @@ while True:
     if data == b'1':
         print("Connection esitablished")
 
+    # Send data
+    message = bytes(str(Xs), 'ascii')
+    print('sending X coordinate "%s"' % message)
+    sock.sendall(message)
 
+    message = bytes(str(Ys), 'ascii')
+    print('sending Y coordinate "%s"' % message)
+    sock.sendall(message)
 
 
 
