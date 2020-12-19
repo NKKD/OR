@@ -41,10 +41,9 @@ while True:
     print('sending X coordinate "%s"' % message)
     conn.send(message)
 
+    conn.close()
 
-
-
-conn.close()
+    break
 
 
 
