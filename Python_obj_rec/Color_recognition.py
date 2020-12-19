@@ -6,6 +6,8 @@ cap = cv2.VideoCapture(0)
 
 cap.set(3, 1920)  # Width
 cap.set(4, 1080)  # Height
+cx = 0
+cy = 0
 
 while (True):
 
@@ -38,8 +40,10 @@ while (True):
 
     cv2.imshow('Input', frame)
 
-    # print('Local x-coordinate' , cx)
-    # print('Local y-coordinate' , cy)
+    if cx and cy is not None:
+
+        print(cx)
+        print(cy)
 
     keyDown = cv2.waitKey(1)
 
