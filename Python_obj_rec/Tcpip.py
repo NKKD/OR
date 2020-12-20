@@ -51,8 +51,8 @@ def recognition():
 
         # transfter coordinates into robot system
 
-        rx = -(cy - 540) * (217 / 1080) + 650  # mm
-        ry = -(cx - 960) * (388.6 / 1920) + 127
+        rx = (-(cy - 540)) * (217 / 1080) + 650  # mm
+        ry = (-(cx - 960)) * (388.6 / 1920) - 127
 
         print("rx is :", rx)
         print("ry is :", ry)
@@ -114,7 +114,7 @@ if __name__ == '__main__':
         b = 2.2607
         c = -0
 
-        coordinate = x, y, z, a, b, c
+        coordinate = x/1000, y/1000, z, a, b, c
 
         # Send data
         message = bytes(str(coordinate), 'ascii')
