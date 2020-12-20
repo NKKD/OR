@@ -8,6 +8,8 @@ cap.set(3, 1920)  # Width
 cap.set(4, 1080)  # Height
 cx = 0
 cy = 0
+rx = 0
+ry = 0
 
 while (True):
 
@@ -45,6 +47,14 @@ while (True):
         print(cx)
         print(cy)
 
+    # transfter coordinates into robot system
+
+    rx = -(cy - 540) * (217/1080) + 650 # mm
+    ry = -(cx - 960) * (388.6/1920) + 127
+
+    print("rx is :", rx)
+    print("ry is :", ry)
+
     keyDown = cv2.waitKey(1)
 
     if keyDown == ord('q'):
@@ -53,3 +63,5 @@ while (True):
 
 cap.release()
 cv2.destroyAllWindows()
+
+

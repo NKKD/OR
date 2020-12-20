@@ -1,4 +1,5 @@
 def recognition():
+
     print("object recognition start")
 
     import cv2
@@ -46,13 +47,14 @@ def recognition():
         cv2.imshow('Input', frame)
 
         if cx and cy is not None:
+
             print(cx)
             print(cy)
 
         # transfter coordinates into robot system
 
-        rx = -(cy - 540) * (217 / 1080) + 650  # mm
-        ry = -(cx - 960) * (388.6 / 1920) + 127
+        rx = -(cy - 540) * (217/1080) + 650 # mm
+        ry = -(cx - 960) * (388.6/1920) + 127
 
         print("rx is :", rx)
         print("ry is :", ry)
@@ -69,58 +71,11 @@ def recognition():
     return rx, ry
 
 
-if __name__ == '__main__':
+print("hello world")
 
-    import socket
+x,y = recognition()
 
-    # define socket category and socket type in our case using TCP/IP
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+print("returned x and y is:", x,y)
 
-    # create a socket with IP address 192.168.12.248 port number 1025
 
-    Tcp_IP = '192.168.12.248'
-    Tcp_Port = 1025
-
-    # Open the socket and listen
-
-    s.bind((Tcp_IP, Tcp_Port))
-    s.listen(1)
-
-    conn, addr = s.accept()
-    print('Connection address:', addr)
-
-    while True:
-
-        data = conn.recv(1024)
-        print("recive data: ")
-        print(data)
-
-        if not data:
-            break
-            print("Connection lost")
-
-        if data == b'1':
-            print("Connection esitablished")
-
-            x, y = recognition()
-
-            print("returned x and y is:", x, y)
-
-            print("color recogition finished")
-
-        z = 0.2
-
-        a = -2.18148
-        b = 2.2607
-        c = -0
-
-        coordinate = x, y, z, a, b, c
-
-        # Send data
-        message = bytes(str(coordinate), 'ascii')
-        print('sending X coordinate "%s"' % message)
-        conn.send(message)
-
-        conn.close()
-
-        break
+print("color recogition finished")
