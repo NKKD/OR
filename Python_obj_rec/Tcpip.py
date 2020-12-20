@@ -5,7 +5,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # create a socket with IP address 192.168.12.248 port number 1025
 
-Tcp_IP = '127.0.0.1'
+Tcp_IP = '192.168.12.248'
 Tcp_Port = 1025
 
 # Open the socket and listen
@@ -30,11 +30,16 @@ while True:
         print("Connection esitablished")
 
 
-    x = 2.0
-    y = 3.0
-    z = 4.0
+    x = 0.57339
+    y = -0.09126
+    z = 0.2
+    a = -2.18148
+    b = 2.2607
+    c = -0
 
-    coordinate = x,y,z,'\n'
+
+
+    coordinate = x,y,z,a,b,c
 
     # Send data
     message = bytes(str(coordinate),'ascii')
