@@ -19,7 +19,7 @@ while(True):
 
     # -- Step 1: Detect the keypoints using SURF Detector, compute the descriptors
     minHessian = 400
-    detector = cv2.xfeatures2d_SURF.create(hessianThreshold=minHessian)
+    detector = cv2.xfeatures2d.SURF_create(hessianThreshold=minHessian)
 
     keypoints1, descriptors1 = detector.detectAndCompute(target_image, None)
     keypoints2, descriptors2 = detector.detectAndCompute(scene_image, None)
@@ -35,6 +35,5 @@ while(True):
         print('Quitting')
         break
 
-cap.release()
 cv2.destroyAllWindows()
 
