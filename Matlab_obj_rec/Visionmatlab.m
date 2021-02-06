@@ -5,14 +5,8 @@ tc=tcpip('192.168.0.20',1025);
 %open the communication 
 fopen(tc);
 
-
-
-
-
 % recive a message from the robotstudio
 message=fread(tc,7);
-
-
 
 % Run vision progamme
 
