@@ -33,7 +33,7 @@ def rotationMatrixToEulerAngles(R):
     return np.array([x, y, z])
 
 
-R =  np.array([(-3.95832649e-01  ,3.74170534e-01  ,0),
+R =  np.array([(-3.95832649e-01  ,3.74170534e-01  ,344.238),
                     (-3.02544355e-01 ,-3.10247769e-01  ,0),
                         ( 0  ,0  ,1.00000000e+00)])
 
