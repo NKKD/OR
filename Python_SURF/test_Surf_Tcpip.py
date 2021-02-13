@@ -4,8 +4,6 @@ import matplotlib.pyplot as plt
 import math
 import socket
 
-
-
 if __name__ == '__main__':
 
     # define socket category and socket type in our case using TCP/IP
@@ -13,8 +11,8 @@ if __name__ == '__main__':
 
     # create a socket with IP address 192.168.12.248 port number 1025
 
-    Tcp_IP = '127.0.0.1'
-    Tcp_Port = 21
+    Tcp_IP = '192.168.12.253'
+    Tcp_Port = 1025
 
     # Open the socket and listen
 
@@ -26,7 +24,7 @@ if __name__ == '__main__':
 
     while True:
 
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture(1)
 
         cap.set(3, 1920)  # Width
         cap.set(4, 1080)  # Height
@@ -45,7 +43,6 @@ if __name__ == '__main__':
         print(data)
 
         if data != b'1\r\n':
-
             print("Connection lost")
 
             break
@@ -92,71 +89,83 @@ if __name__ == '__main__':
                                flags=2)
             img3 = cv2.drawMatches(img1, kp1, img2, kp2, good, None, **draw_params)
 
-            print('Transformation matrix M is:', '\n', M, '\n')
-            print('Bounding box corners coordinates dst: ', '\n', dst, '\n')
-            # print('centroid of the bounding box is', , '\n')
+            try:
 
-            R = M
+                M is not None
 
-            sy = math.sqrt(R[0, 0] * R[0, 0] + R[1, 0] * R[1, 0])
+                print('Transformation matrix M is:', '\n', M, '\n')
+                print('Bounding box corners coordinates dst: ', '\n', dst, '\n')
+                # print('centroid of the bounding box is', , '\n')
 
-            singular = sy < 1e-6
+                R = M
 
-            if not singular:
-                ex = math.atan2(R[2, 1], R[2, 2])
-                ey = math.atan2(-R[2, 0], sy)
-                ez = math.atan2(R[1, 0], R[0, 0])
-            else:
-                ex = math.atan2(-R[1, 2], R[1, 1])
-                ey = math.atan2(-R[2, 0], sy)
-                ez = 0
+                sy = math.sqrt(R[0, 0] * R[0, 0] + R[1, 0] * R[1, 0])
 
-            print("The euler angle is ", ex, ey, ez, '\n')
+                singular = sy < 1e-6
 
-            x0 = dst[0][0][0]
-            y0 = dst[0][0][1]
+                if not singular:
+                    ex = math.atan2(R[2, 1], R[2, 2])
+                    ey = math.atan2(-R[2, 0], sy)
+                    ez = math.atan2(R[1, 0], R[0, 0])
+                else:
+                    ex = math.atan2(-R[1, 2], R[1, 1])
+                    ey = math.atan2(-R[2, 0], sy)
+                    ez = 0
 
-            x1 = dst[1][0][0]
-            y1 = dst[1][0][1]
+                print("The euler angle is ", ex, ey, ez, '\n')
 
-            x2 = dst[2][0][0]
-            y2 = dst[2][0][1]
+                x0 = dst[0][0][0]
+                y0 = dst[0][0][1]
 
-            x3 = dst[3][0][0]
-            y3 = dst[3][0][1]
+                x1 = dst[1][0][0]
+                y1 = dst[1][0][1]
 
-            x = [x1, x2, x3, x0]
-            y = [y0, y1, y2, y3]
+                x2 = dst[2][0][0]
+                y2 = dst[2][0][1]
 
-            print("Max value of all x: ", max(x))
-            print("Max value of all y: ", max(y))
-            print("Min value of all x: ", min(x))
-            print("Min value of all y: ", min(y))
+                x3 = dst[3][0][0]
+                y3 = dst[3][0][1]
 
-            xcenter = 0.5 * (max(x) - min(x)) + min(x)
-            ycenter = 0.5 * (max(y) - min(y)) + min(y)
+                x = [x1, x2, x3, x0]
+                y = [y0, y1, y2, y3]
 
-            print("the center of the object is x y: ", xcenter, ycenter)
+                print("Max value of all x: ", max(x))
+                print("Max value of all y: ", max(y))
+                print("Min value of all x: ", min(x))
+                print("Min value of all y: ", min(y))
 
-            plt.imshow(img3), plt.show()
+                xcenter = 0.5 * (max(x) - min(x)) + min(x)
+                ycenter = 0.5 * (max(y) - min(y)) + min(y)
 
-            print("returned values are", xcenter, ycenter, ex, ey, ez)
+                print("the center of the object is x y: ", xcenter, ycenter)
 
-            print("object detection program finished")
+                plt.imshow(img3), plt.show()
 
-            z = 0.2
+                print("returned values are", xcenter, ycenter, ex, ey, ez)
 
-            a = -2.18148
-            b = 2.2607
-            c = -0 + ez
+                print("object detection program finished")
 
-            coordinate = xcenter / 1000, ycenter / 1000, z, a, b, c
+                z = 0.2
 
-            # Send data
-            message = bytes(str(coordinate), 'ascii')
-            print('sending X coordinate "%s"' % message)
-            conn.send(message)
+                a = -2.18148
+                b = 2.2607
+                c = -0 + ez
 
-            conn.close()
+                coordinate = xcenter / 1000, ycenter / 1000, z, a, b, c
 
-            break
+                # Send data
+                message = bytes(str(coordinate), 'ascii')
+                print('sending X coordinate "%s"' % message)
+                conn.send(message)
+
+                conn.close()
+                cap.release()
+                cv2.destroyAllWindows()
+
+            except Exception as e:
+
+                print("Object detection un-success")
+
+                conn.close()
+                cap.release()
+                cv2.destroyAllWindows()
