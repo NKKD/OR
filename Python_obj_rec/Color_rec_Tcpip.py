@@ -95,10 +95,6 @@ if __name__ == '__main__':
         print("recive data: ")
         print(data)
 
-        if not data:
-            break
-            print("Connection lost")
-
         if data == b'1':
             print("Connection esitablished")
 
@@ -110,16 +106,24 @@ if __name__ == '__main__':
 
         z = 0.2
 
-        a = -2.18148
-        b = 2.2607
+        a = 2.18148
+        b = -2.2607
         c = -0
 
         coordinate = x/1000, y/1000, z, a, b, c
 
+        t = -0.84
+
+        rotation = 0,0,0,0,0,t
+
         # Send data
-        message = bytes(str(coordinate), 'ascii')
-        print('sending X coordinate "%s"' % message)
-        conn.send(message)
+        message1 = bytes(str(coordinate), 'ascii')
+        print('sending X coordinate "%s"' % message1)
+        conn.send(message1)
+
+        message2 = bytes(str(rotation), 'ascii')
+        print('sending rotation values "%s"' % message2)
+        conn.send(message2)
 
         conn.close()
 

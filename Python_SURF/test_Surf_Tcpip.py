@@ -24,31 +24,30 @@ if __name__ == '__main__':
 
     while True:
 
-        cap = cv2.VideoCapture(1)
-
-        cap.set(3, 1920)  # Width
-        cap.set(4, 1080)  # Height
-
-        ret, frame = cap.read()
-
-        MIN_MATCH_COUNT = 50
+        MIN_MATCH_COUNT = 10
 
         img1 = cv2.imread('arduino.jpg', 0)  # Target Object
-
-        img2 = frame  # Scene Image
 
         data = conn.recv(1024)
 
         print("recieved data: ")
         print(data)
 
-        if data != b'1\r\n':
+        if data != b'1':
             print("Connection lost")
 
             break
 
-        if data == b'1\r\n':
+        else :
             print("Connection established")
+
+            cap = cv2.VideoCapture(1)
+
+            cap.set(3, 1920)  # Width
+            cap.set(4, 1080)  # Height
+
+            ret, frame = cap.read()
+            img2 = frame  # Scene Image
 
             # run the surf object detection program
 
@@ -137,11 +136,14 @@ if __name__ == '__main__':
                 xcenter = 0.5 * (max(x) - min(x)) + min(x)
                 ycenter = 0.5 * (max(y) - min(y)) + min(y)
 
+                tx = (-(ycenter - 540)) * (217 / 1080) + 650  # mm
+                ty = (-(xcenter - 960)) * (388.6 / 1920) - 127
+
                 print("the center of the object is x y: ", xcenter, ycenter)
 
                 plt.imshow(img3), plt.show()
 
-                print("returned values are", xcenter, ycenter, ex, ey, ez)
+                print("returned values are", tx, ty, ex, ey, ez)
 
                 print("object detection program finished")
 
@@ -149,16 +151,23 @@ if __name__ == '__main__':
 
                 a = -2.18148
                 b = 2.2607
-                c = -0 + ez
+                c = 0
 
-                coordinate = xcenter / 1000, ycenter / 1000, z, a, b, c
+                coordinate = tx / 1000, ty / 1000, z, a, b, c
+
+                rotation = 0, 0, 0, 0, 0, ez
 
                 # Send data
-                message = bytes(str(coordinate), 'ascii')
-                print('sending X coordinate "%s"' % message)
-                conn.send(message)
+                message1 = bytes(str(coordinate), 'ascii')
+                print('sending X coordinate "%s"' % message1)
+                conn.send(message1)
+
+                message2 = bytes(str(rotation), 'ascii')
+                print('sending rotation values "%s"' % message2)
+                conn.send(message2)
 
                 conn.close()
+
                 cap.release()
                 cv2.destroyAllWindows()
 
