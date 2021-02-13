@@ -7,13 +7,17 @@ import socket
 
 def surf_object_rec():
 
-    cap = cv2.VideoCapture(0)
+
+    cap = cv2.VideoCapture(1)
+
+    # cap.set(3, 1920)  # Width
+    # cap.set(4, 1080)  # Height
 
     ret, frame = cap.read()
 
-    MIN_MATCH_COUNT = 10
+    MIN_MATCH_COUNT = 100
 
-    img1 = cv2.imread('e.jpg', 0)  # Target Object
+    img1 = cv2.imread('arduino.jpg.jpg', 0)  # Target Object
 
     img2 = frame  # Scene Image
 
@@ -112,7 +116,7 @@ if __name__ == '__main__':
 
     # create a socket with IP address 192.168.12.248 port number 1025
 
-    Tcp_IP = '192.168.12.248'
+    Tcp_IP = '192.168.12.253'
     Tcp_Port = 1025
 
     # Open the socket and listen
@@ -144,19 +148,19 @@ if __name__ == '__main__':
 
             print("object detection program finished")
 
-        z = 0.2
+            z = 0.2
 
-        a = -2.18148
-        b = 2.2607
-        c = -0 + ez
+            a = -2.18148
+            b = 2.2607
+            c = -0 + ez
 
-        coordinate = x / 1000, y / 1000, z, a, b, c
+            coordinate = x / 1000, y / 1000, z, a, b, c
 
-        # Send data
-        message = bytes(str(coordinate), 'ascii')
-        print('sending X coordinate "%s"' % message)
-        conn.send(message)
+            # Send data
+            message = bytes(str(coordinate), 'ascii')
+            print('sending X coordinate "%s"' % message)
+            conn.send(message)
 
-        conn.close()
+            conn.close()
 
-        break
+            break

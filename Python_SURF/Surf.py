@@ -5,15 +5,13 @@ import math
 
 
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 ret, frame = cap.read()
 
+MIN_MATCH_COUNT = 100
 
-
-MIN_MATCH_COUNT = 10
-
-img1 = cv2.imread('e.jpg', 0)  # Target Object
+img1 = cv2.imread('arduino.jpg', 0)  # Target Object
 
 img2 = frame  # Scene Image
 

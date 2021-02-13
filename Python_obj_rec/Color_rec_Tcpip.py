@@ -3,7 +3,7 @@ def recognition():
 
     import cv2
 
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
 
     # set the camera resolution to 1080p
 
@@ -78,7 +78,7 @@ if __name__ == '__main__':
 
     # create a socket with IP address 192.168.12.248 port number 1025
 
-    Tcp_IP = '192.168.12.248'
+    Tcp_IP = '192.168.12.253'
     Tcp_Port = 1025
 
     # Open the socket and listen
