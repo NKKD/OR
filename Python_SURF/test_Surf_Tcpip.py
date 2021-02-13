@@ -26,31 +26,34 @@ if __name__ == '__main__':
 
     while True:
 
+        cap = cv2.VideoCapture(0)
+
+        cap.set(3, 1920)  # Width
+        cap.set(4, 1080)  # Height
+
+        ret, frame = cap.read()
+
+        MIN_MATCH_COUNT = 50
+
+        img1 = cv2.imread('arduino.jpg', 0)  # Target Object
+
+        img2 = frame  # Scene Image
+
         data = conn.recv(1024)
+
         print("recieved data: ")
         print(data)
 
-        if not data:
-            break
+        if data != b'1\r\n':
+
             print("Connection lost")
 
-        if data == b'1':
+            break
+
+        if data == b'1\r\n':
             print("Connection established")
 
             # run the surf object detection program
-
-            cap = cv2.VideoCapture(1)
-
-            cap.set(3, 1920)  # Width
-            cap.set(4, 1080)  # Height
-
-            ret, frame = cap.read()
-
-            MIN_MATCH_COUNT = 10
-
-            img1 = cv2.imread('arduino.jpg.jpg', 0)  # Target Object
-
-            img2 = frame  # Scene Image
 
             # Initiate Surf detector
             s = cv2.xfeatures2d.SURF_create()
@@ -147,7 +150,7 @@ if __name__ == '__main__':
             b = 2.2607
             c = -0 + ez
 
-            coordinate = x / 1000, y / 1000, z, a, b, c
+            coordinate = xcenter / 1000, ycenter / 1000, z, a, b, c
 
             # Send data
             message = bytes(str(coordinate), 'ascii')
